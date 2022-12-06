@@ -1,3 +1,6 @@
+//Require morgan
+const morgan = require('morgan')
+
 //Require express
 const express = require('express')
 
@@ -10,8 +13,20 @@ const port = 3000
 //Setup view engine ejs
 app.set('view engine', 'ejs')
 
-//Setup express layout
+//Setup express layout ejs
 app.use(expressLayouts)
+
+//Setup express ejs
+app.use(express.static('public'));
+
+//Setup morgan ejs
+app.use(morgan('dev'))
+
+//Menggunakan middleware
+// app.use((req, res, next) => {
+//   console.log('Time:', Date.now())
+//   next()
+// })
 
 //Menghubungkan ke index html (tampilan awal)
 app.get('/', (req, res) => {
@@ -28,6 +43,7 @@ app.get('/about', (req, res) => {
    //value yang dikirim ke about.ejs
  { title: 'About Page',
    layout: 'layout/lay'})
+   //next()
 })
 
 //Menghubungkan ke contact html
@@ -63,6 +79,7 @@ app.get('/product/:id', (req, res) => {
   res.send(`product id : ${req.params.id} <br> category id : ${req.query.category}`)
 })
 
+//Error
 app.use('/', (req, res) => {
   res.status(404)
   res.send('Error : Page not found!')
